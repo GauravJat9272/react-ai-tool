@@ -17,6 +17,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Dark/Light mode toggle
   useEffect(() => {
     if (darkMode) document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
@@ -69,54 +70,53 @@ function App() {
   }, [result]);
 
   return (
-    <div className="h-screen w-screen flex overflow-hidden bg-white dark:bg-zinc-900">
-      {/* Mobile Sidebar Overlay */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-30 bg-black/40" onClick={() => setSidebarOpen(false)}></div>
-      )}
-
+    <div className="h-screen w-screen flex flex-col md:flex-row">
       {/* Sidebar */}
-      <div className={`fixed z-40 top-0 left-0 h-full w-64 bg-red-100 dark:bg-zinc-800 border-r border-red-100 dark:border-zinc-700 transform transition-transform duration-300
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:static md:w-1/5 flex flex-col justify-between`}>
+      <div
+        className={`fixed md:relative z-20 top-0 left-0 h-full bg-red-100 dark:bg-zinc-800 border-r border-red-100 dark:border-zinc-700 p-4 transform transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 md:w-1/4 w-3/4 flex flex-col`}
+      >
+        {/* Dark/Light Mode Toggle on top */}
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="mb-3 px-3 py-2 rounded-lg bg-gray-200 dark:bg-zinc-700 text-black dark:text-white w-full"
+        >
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+
+        {/* Recent Search List */}
         <RecentSearch
           recentHistory={recentHistory}
           setRecentHistory={setRecentHistory}
           setSelectedHistory={setSelectedHistory}
         />
-
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="mt-4 px-3 py-2 rounded-lg bg-gray-200 dark:bg-zinc-700 text-black dark:text-white w-full"
-        >
-          {darkMode ? "Light Mode" : "Dark Mode"}
-        </button>
       </div>
 
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col relative md:ml-64">
-        {/* Mobile top bar */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-red-100 dark:border-zinc-700 bg-red-100 dark:bg-zinc-800">
-          <h1 className="text-xl font-bold text-zinc-800 dark:text-white">Chat</h1>
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 bg-gray-200 dark:bg-zinc-700 rounded-lg"
-          >
-            ☰
-          </button>
-        </div>
+      {/* Sidebar toggle button for mobile */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="md:hidden fixed top-4 left-4 z-30 p-2 rounded bg-gray-200 dark:bg-zinc-700 text-black dark:text-white"
+      >
+        ☰
+      </button>
 
-        {/* Chat Header */}
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-700 hidden md:block">
+      {/* Main Chat Area */}
+      <div className="flex-1 flex flex-col h-full md:ml-1/4 p-4 md:p-6 relative">
+        {/* Header */}
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-700 text-center">
           Hello User, Ask me Anything
         </h1>
 
         {/* Chat Messages */}
-        <div ref={scrollToAns} className="flex-1 overflow-y-auto p-4 space-y-3">
-          {result.map((item, index) => (
-            <QuestionAnswer key={index} item={item} index={index} />
-          ))}
+        <div ref={scrollToAns} className="flex-1 overflow-y-auto mb-4 relative">
+          <ul className="space-y-3 dark:text-zinc-300 text-zinc-800">
+            {result.map((item, index) => (
+              <QuestionAnswer key={index} item={item} index={index} />
+            ))}
+          </ul>
 
-          {/* Loader */}
+          {/* Loader Centered */}
           {loader && (
             <div className="absolute inset-0 flex justify-center items-center bg-black/20 z-10">
               <svg
@@ -140,18 +140,18 @@ function App() {
         </div>
 
         {/* Input Bar */}
-        <div className="flex items-center p-4 border-t border-red-100 dark:border-zinc-700 bg-red-100 dark:bg-zinc-800 gap-2">
+        <div className="flex flex-col sm:flex-row items-center w-full max-w-2xl mx-auto bg-red-100 dark:bg-zinc-800 rounded-3xl border border-zinc-400 dark:border-zinc-700 p-2 gap-2">
           <input
             type="text"
             value={question}
             onKeyDown={isEnter}
             onChange={(e) => setQuestions(e.target.value)}
-            className="flex-1 p-2 rounded-lg bg-white dark:bg-zinc-700 text-zinc-800 dark:text-white outline-none"
+            className="flex-1 bg-transparent p-2 outline-none text-zinc-800 dark:text-white rounded-lg w-full sm:w-auto"
             placeholder="Ask me anything..."
           />
           <button
             onClick={askQuestion}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-medium hover:opacity-90 transition"
+            className="px-4 py-2 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-medium hover:opacity-90 transition w-full sm:w-auto"
           >
             Ask
           </button>
