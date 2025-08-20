@@ -70,19 +70,20 @@ function App() {
   }, [result]);
 
   return (
-    <div className="h-screen w-screen flex flex-col md:flex-row">
+    <div className="h-screen w-screen flex flex-col md:flex-row bg-gray-100 dark:bg-zinc-900 transition-colors duration-500">
+      
       {/* Sidebar */}
       <div
-        className={`fixed md:relative z-20 top-0 left-0 h-full bg-red-100 dark:bg-zinc-800 border-r border-red-100 dark:border-zinc-700 p-4 transform transition-transform duration-300 ${
+        className={`fixed md:relative z-20 top-0 left-0 h-full bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-700 p-5 transform transition-transform duration-300 shadow-lg ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:w-1/4 w-3/4 flex flex-col`}
       >
-        {/* Dark/Light Mode Toggle on top */}
+        {/* Dark/Light Mode Toggle */}
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="mb-3 px-3 py-2 rounded-lg bg-gray-200 dark:bg-zinc-700 text-black dark:text-white w-full"
+          className="mb-6 px-4 py-2 rounded-lg bg-gray-200 dark:bg-zinc-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors duration-200 font-medium"
         >
-          {darkMode ? "Light Mode" : "Dark Mode"}
+          {darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
         </button>
 
         {/* Recent Search List */}
@@ -93,65 +94,52 @@ function App() {
         />
       </div>
 
-      {/* Sidebar toggle button for mobile */}
+      {/* Sidebar toggle for mobile */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed top-4 left-4 z-30 p-2 rounded bg-gray-200 dark:bg-zinc-700 text-black dark:text-white"
+        className="md:hidden fixed top-4 left-4 z-30 p-3 rounded-full bg-white dark:bg-zinc-700 shadow text-gray-900 dark:text-white hover:scale-110 transition-transform duration-200"
       >
         ☰
       </button>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col h-full md:ml-1/4 p-4 md:p-6 relative">
+      <div className="flex-1 flex flex-col h-full md:ml-1/4 p-6">
+        
         {/* Header */}
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-700 text-center">
-          Hello User, Ask me Anything
+        <h1 className="text-3xl sm:text-3xl font-semibold mb-6 text-center text-gray-800 dark:text-gray-200">
+          Hello User, Ask Me Anything
         </h1>
 
         {/* Chat Messages */}
-        <div ref={scrollToAns} className="flex-1 overflow-y-auto mb-4 relative">
-          <ul className="space-y-3 dark:text-zinc-300 text-zinc-800">
-            {result.map((item, index) => (
-              <QuestionAnswer key={index} item={item} index={index} />
-            ))}
-          </ul>
+        <div
+          ref={scrollToAns}
+          className=" text-white flex-1 overflow-y-auto mb-4 p-4 rounded-xl bg-gray-50 dark:bg-zinc-800 shadow-inner space-y-4"
+        >
+          {result.map((item, index) => (
+            <QuestionAnswer key={index} item={item} index={index} />
+          ))}
 
           {/* Loader Centered */}
           {loader && (
-            <div className="absolute inset-0 flex justify-center items-center bg-black/20 z-10">
-              <svg
-                aria-hidden="true"
-                className="w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M100 50.5C100 78.2 77.6 100.6 50 100.6C22.4 100.6 0 78.2 0 50.5C0 22.8 22.4 0.4 50 0.4C77.6 0.4 100 22.8 100 50.5Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M93.9 39.1C96.4 38.4 97.6 35.6 96.5 33.2C95.4 30.8 92.6 29.6 90.1 30.3C86.3 31.3 82.5 32 78.7 32.6C74.9 33.2 71.1 33.7 67.3 34.2C63.5 34.7 59.7 35 55.9 35.3C52.1 35.6 48.3 35.8 44.5 36C40.7 36.2 36.9 36.3 33.1 36.5C29.3 36.7 25.5 36.8 21.7 36.9C17.9 37 14.1 37 10.3 37C6.5 37 2.7 37 0 37"
-                  fill="currentFill"
-                />
-              </svg>
+            <div className="absolute inset-0 flex justify-center items-center bg-black/10 z-10 rounded-xl">
+              <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-300 dark:border-gray-600 border-t-purple-600 h-12 w-12"></div>
             </div>
           )}
         </div>
 
         {/* Input Bar */}
-        <div className="flex flex-col sm:flex-row items-center w-full max-w-2xl mx-auto bg-red-100 dark:bg-zinc-800 rounded-3xl border border-zinc-400 dark:border-zinc-700 p-2 gap-2">
+        <div className="flex flex-col sm:flex-row items-center w-full max-w-2xl mx-auto bg-white dark:bg-zinc-900 rounded-3xl border border-gray-300 dark:border-zinc-700 p-3 gap-3 shadow-md">
           <input
             type="text"
             value={question}
             onKeyDown={isEnter}
             onChange={(e) => setQuestions(e.target.value)}
-            className="flex-1 bg-transparent p-2 outline-none text-zinc-800 dark:text-white rounded-lg w-full sm:w-auto"
+            className="flex-1 bg-transparent p-3 outline-none text-gray-900 dark:text-white rounded-2xl placeholder-gray-400 dark:placeholder-gray-500 w-full sm:w-auto"
             placeholder="Ask me anything..."
           />
           <button
             onClick={askQuestion}
-            className="px-4 py-2 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-medium hover:opacity-90 transition w-full sm:w-auto"
+            className="px-6 py-3 rounded-2xl bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors duration-200 w-full sm:w-auto"
           >
             Ask
           </button>
