@@ -83,7 +83,7 @@ function App() {
           onClick={() => setDarkMode(!darkMode)}
           className="mb-6 px-4 py-2 rounded-lg bg-gray-200 dark:bg-zinc-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors duration-200 font-medium"
         >
-          {darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          {darkMode ? "Light Mode" : "Dark Mode"}
         </button>
 
         {/* Recent Search List */}
@@ -113,7 +113,7 @@ function App() {
         {/* Chat Messages */}
         <div
           ref={scrollToAns}
-          className=" text-white flex-1 overflow-y-auto mb-4 p-4 rounded-xl bg-gray-50 dark:bg-zinc-800 shadow-inner space-y-4"
+          className=" text-black dark:text-white flex-1 overflow-y-auto mb-4 p-4 rounded-xl bg-gray-50 dark:bg-zinc-800 shadow-inner space-y-4"
         >
           {result.map((item, index) => (
             <QuestionAnswer key={index} item={item} index={index} />

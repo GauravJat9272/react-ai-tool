@@ -37,7 +37,7 @@ const Answer = ({ ans, totalResult, index, type }) => {
   return (
     <>
       {index === 0 && totalResult > 1 ? (
-        <span className="pt-2 text-xl block text-zinc-900 dark:text-white">
+        <span className=" pt-2 text-xl block text-zinc-900 dark:text-white">
           {answer}
         </span>
       ) : heading ? (
